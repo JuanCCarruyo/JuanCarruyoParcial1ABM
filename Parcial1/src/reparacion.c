@@ -15,10 +15,12 @@
 #include "servicio.h"
 #include "utnInputs.h"
 #include "marca.h"
+#include "fecha.h"
 
-int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, int limite, int *contRep) {
+int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, eFecha *pFecha, int limite, int *contRep, int *contFecha) {
 
 	int resultadoAddRep = 0;
+	int resultadoGetFecha = 0;
 	int retorno = -1;
 
 
@@ -27,11 +29,12 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, i
 
 
 	int idElectro;
-	int residElectro;
+	int residElectro=0;
 	int idServicio;
-	int residServicio;
+	int residServicio=0;
 	int indiceElec;
-	int fecha=2020;
+
+	;
 
 
 
@@ -40,12 +43,18 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, i
 
 
 	do{
+		if(residElectro!=0){
+			printf("\nError, ID invalido: ");
+		}
 	printf("\nIngrese el ID del Electrodomestico: ");
 	scanf("%d", &idElectro);
 	residElectro = checkElectro(pElectro, limite, idElectro);
 	}while (residElectro!=0);
 
 	do{
+		if(residServicio!=0){
+			printf("\nError, ID invalido: ");
+		}
 	printf("\nIngrese el ID del Servicio: ");
 	scanf("%d", &idServicio);
 	residServicio = checkServicio(pServicio, limite, idServicio);
@@ -55,9 +64,13 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, i
 
 	serie = pElectro[indiceElec].serie;
 
+	resultadoGetFecha = getFecha(pFecha, limite, "\nError.", 10, contFecha);
+	if (resultadoGetFecha != 0) {
+		printf("\nError ingresando Fecha.\n");
+		system("pause");
+	}
 
-	resultadoAddRep = addRep(pArray, limite, auxId, serie, idServicio,
-			fecha, contRep);
+	resultadoAddRep = addRep(pArray, limite, auxId, serie, idServicio, pFecha, contRep);
 
 	if (resultadoAddRep != 0) {
 		printf("\nError agregando reparacion.\n");
@@ -109,7 +122,7 @@ int checkServicio(Servicio *pServicio, int limite, int inputServicio)
 	return retorno;
 }
 
-int addRep(Reparacion *pArray, int limite, int id, int serie, int idServicio, int fecha, int *contReparacion) {
+int addRep(Reparacion *pArray, int limite, int id, int serie, int idServicio, eFecha *fecha, int *contReparacion) {
 	int retorno = -1;
 	int i;
 	int contador = *contReparacion;
@@ -121,7 +134,9 @@ int addRep(Reparacion *pArray, int limite, int id, int serie, int idServicio, in
 		pArray[i].id = *contReparacion;
 		pArray[i].serie = serie;
 		pArray[i].idServicio = idServicio;
-		pArray[i].fecha = fecha;
+		pArray[i].fecha.dia = fecha[i].dia;
+		pArray[i].fecha.mes = fecha[i].mes;
+		pArray[i].fecha.anio = fecha[i].anio;
 		pArray[i].isEmpty = 0;
 
 		retorno = 0;
@@ -143,8 +158,8 @@ int printRep(Reparacion *pArray, int limite) {
 		printf("\n|__________|_______________|______________________|_____________________||");
 		for (i = 0; i < limite; i++) {
 			if (pArray[i].isEmpty != 1) {
-				printf("|          |\n|%d         |   %d          -       %d           -     %d      \n",
-							pArray[i].id,    pArray[i].serie,      pArray[i].idServicio,       pArray[i].fecha);
+				printf("|          |\n|%d         |   %d          -       %d           -     %d/%d/%d      \n",
+							pArray[i].id,    pArray[i].serie,      pArray[i].idServicio,       pArray[i].fecha.dia,pArray[i].fecha.mes,pArray[i].fecha.anio);
 			}
 		}
 		retorno = 0;

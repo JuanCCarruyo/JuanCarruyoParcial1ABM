@@ -59,4 +59,5 @@ int charMenu(char* opcion,int max);
 
 int findEmptyE(Electro *pArray, int limite, int *pos);
 int findEmptyR(Reparacion *pArray, int limite, int *pos);
+int findEmptyF(eFecha *pArray, int limite, int *pos);
 #endif /* UTNINPUTS_H_ */

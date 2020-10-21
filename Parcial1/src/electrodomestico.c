@@ -36,7 +36,7 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 
 
 	getInt(&serie, "\nIngrese el numero de serie: ",
-			"\nERROR: Serie debe ser entre 1 y 9999", 1, 9999, 10);
+			"\nERROR: Serie debe ser de 5 digitos", 10000, 99999, 10);
 
 	do{
 	printf("\nIngrese el ID de la marca: ");
@@ -113,12 +113,12 @@ int printElectro(Electro *pArray, int limite) {
 	int retorno = -1;
 	int i;
 	if (pArray != NULL && limite > 0) {
-		printf("\n_______________________________________________________________________");
-		printf("\n| ID:      |     Serie:    |     ID Marca:     |        Modelo:      ||| ");
-		printf("\n|__________|_______________|___________________|_____________________||");
+		printf("\n____________________________________________________________________");
+		printf("\n| ID:      |     Serie:    |     ID Marca:     |    Modelo:      ||| ");
+		printf("\n|__________|_______________|___________________|_________________|||\n");
 		for (i = 0; i < limite; i++) {
 			if (pArray[i].isEmpty != 1) {
-				printf("|          |\n|%d         |   %d          -       %d           -     %d      \n",
+				printf("|%d         |   %d       |       %d        |     %d    \n",
 							pArray[i].id,    pArray[i].serie,      pArray[i].idMarca,       pArray[i].modelo);
 			}
 		}
@@ -201,7 +201,7 @@ int modifyElectro(Electro* pArray, int indice)
 	case 1:
 
 		getInt(&inputSerie, "\nIngrese el numero de serie: ",
-				"\nERROR: Serie debe ser entre 1 y 9999", 1, 9999, 10);
+				"\nERROR: Serie debe ser de 5 digitos", 10000, 99999, 10);
 		pArray[indice].serie = inputSerie;
 		retorno = 0;
 		break;

@@ -26,18 +26,21 @@
 int main(void) {
 	setbuf(stdout, NULL);
 
-	Marca marcas[]={{1000, "Wirpool",0}, {1001, "Sony",0}, {1002, "Liliana",0}, {1003, "Gafa",0}, {1004, "Philips",0}};
+	Marca marcas[]={{1000, "Wirpool",0}, {1001, "Sony   ",0}, {1002, "Liliana",0}, {1003, "Gafa   ",0}, {1004, "Philips",0}};
 
-	Servicio servicio[]= {{20000, "Garantia", 250,0}, {20001, "Mantenimiento", 500,0}, {20002, "Repuestos", 400,0}, {20003, "Refaccion", 600,0}};
-
+	Servicio servicio[]= {{20000, "Garantia     ", 250,0}, {20001, "Mantenimiento", 500,0}, {20002, "Repuestos    ", 400,0}, {20003, "Refaccion    ", 600,0}};
+                                   //8                            13                               9                           9
 	Electro arrayElectro[MAX];
 	Reparacion arrayRep[MAX];
+	eFecha arrayFecha[MAX];
 	int contElectro=0;
 	int contRep=0;
+	int contFecha=0;
 
 	int opcion;
 	int resultadoInicializar;
 	int resultadoInicializar2;
+	int resultadoInicializar3;
 	int resultadoMenu;
 	int resultadoCargaElectro;
 	int flagAltaElectro;
@@ -51,14 +54,16 @@ int main(void) {
 	int resultadoSortElectro;
 	int resultadoPrintElectro;
 	int resultadoPrintRep;
+	int resultadoAltaReparacion;
 
 	int inputID;
 
 	resultadoInicializar = initElectro(arrayElectro, MAX);
 	resultadoInicializar2 = initRep(arrayRep, MAX);
+	resultadoInicializar3 = initFecha(arrayFecha, MAX);
 
 	do {
-			if (resultadoInicializar == -1 || resultadoInicializar2 == -1) {
+			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1) {
 				printf("\nERROR AL INICIALIZAR");
 				system("pause");
 				break;
@@ -218,8 +223,8 @@ int main(void) {
 				if(flagAltaElectro == 1)
 				{
 
-					resultadoCargaElectro = altaReparacion(arrayRep, arrayElectro, servicio, MAX, &contRep);
-					if (resultadoCargaElectro != 0) {
+					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, MAX, &contRep, &contFecha);
+					if (resultadoAltaReparacion != 0) {
 						printf("\nError en la Carga.\n");
 						system("pause");
 					}

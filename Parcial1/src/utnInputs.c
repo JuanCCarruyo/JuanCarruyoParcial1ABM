@@ -196,3 +196,20 @@ int findEmptyR(Reparacion *pArray, int limite, int *pos) {
 
 	return retorno;
 }
+
+int findEmptyF(eFecha *pArray, int limite, int *pos) {
+	int retorno = -1;
+	int i;
+
+	if (pArray != NULL && limite > 0 && pos != NULL) {
+		for (i = 0; i < limite; i++) {
+			if (pArray[i].isEmpty == 1) {
+				retorno = 0;
+				*pos = i;
+				break;
+			}
+		}
+	}
+
+	return retorno;
+}

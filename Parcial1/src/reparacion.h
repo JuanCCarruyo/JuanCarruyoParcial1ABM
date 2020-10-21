@@ -17,17 +17,17 @@ typedef struct
 int id;
 int serie;
 int idServicio;
-int fecha;
+eFecha fecha;
 int isEmpty;
 }Reparacion;
 
-int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, int limite, int *contRep);
+int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, eFecha *pFecha, int limite, int *contRep, int *contFecha);
 
 int checkElectro(Electro *pElectro, int limite, int inputElectro);
 
 int checkServicio(Servicio *pServicio, int limite, int inputServicio);
 
-int addRep(Reparacion *pArray, int limite, int id, int serie, int idServicio, int fecha, int *contReparacion);
+int addRep(Reparacion *pArray, int limite, int id, int serie, int idServicio, eFecha *fecha, int *contReparacion);
 
 int printRep(Reparacion *pArray, int limite);
 

@@ -1,0 +1,43 @@
+/*
+ * fecha.c
+ *
+ *  Created on: Oct 15, 2020
+ *      Author: david
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include "utnInputs.h"
+#include "fecha.h"
+
+int getFecha(eFecha *pArray, char* mensaje, char* mensajeError, int reintentos)
+{
+
+	int ret=0;
+	int mes;
+
+	while(reintentos>0)
+	{
+		printf("\nIngrese la fecha: ");
+		printf("\nIngrese el Mes: (en numero)");
+		if(scanf("%d",&mes)==1){
+		if(mes<=12 && mes>=1)
+			{break;}
+		}
+		fflush(stdin);
+		reintentos--;
+		printf(mensajeError);
+	}
+	if(reintentos==0)
+	{
+		ret=-1;
+	}
+	else
+	{
+		ret=0;
+		*pArray.mes = mes;
+	}
+		return ret;
+}
