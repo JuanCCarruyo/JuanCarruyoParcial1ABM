@@ -44,7 +44,6 @@ int main(void) {
 	int resultadoMenu;
 	int resultadoCargaElectro;
 	int flagAltaElectro;
-	int flagAltaReparacion;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
 	int resultadoRemoveElectro;
@@ -96,7 +95,6 @@ int main(void) {
 
 				resultadoCargaElectro = altaElectro(arrayElectro, marcas, MAX, &contElectro);
 				if (resultadoCargaElectro != 0) {
-					flagAltaElectro = 0;
 					printf("\nError en la Carga.\n");
 					system("pause");
 				}
@@ -210,7 +208,7 @@ int main(void) {
 
 			case 6: //LISTAR SERVICIOS
 
-				resultadoPrintServicio = printServicio(servicio,4);
+				resultadoPrintServicio = printServicio(servicio,MAX);
 				if (resultadoPrintServicio != 0)
 				{
 					printf("\nError mostrando los servicios.\n");
@@ -224,11 +222,9 @@ int main(void) {
 			case 7: //ALTA REPARACION
 				if(flagAltaElectro == 1)
 				{
-					flagAltaReparacion = 1;
 
 					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, MAX, &contRep, &contFecha);
 					if (resultadoAltaReparacion != 0) {
-						flagAltaReparacion = 0;
 						printf("\nError en la Carga.\n");
 						system("pause");
 					}
@@ -246,7 +242,7 @@ int main(void) {
 
 			case 8: //LISTAR REPARACIONES
 
-				if(flagAltaElectro == 1 && flagAltaReparacion == 1)
+				if(flagAltaElectro == 1)
 				{
 					resultadoPrintRep = printRep(arrayRep, MAX);
 					if (resultadoPrintRep != 0) {

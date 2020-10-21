@@ -210,7 +210,7 @@ int main(void) {
 
 			case 6: //LISTAR SERVICIOS
 
-				resultadoPrintServicio = printServicio(servicio,4);
+				resultadoPrintServicio = printServicio(servicio,3);
 				if (resultadoPrintServicio != 0)
 				{
 					printf("\nError mostrando los servicios.\n");

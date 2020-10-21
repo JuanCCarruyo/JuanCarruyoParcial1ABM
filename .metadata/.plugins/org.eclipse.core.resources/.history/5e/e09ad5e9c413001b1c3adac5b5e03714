@@ -16,7 +16,7 @@ int printMarca(Marca *pArray, int limite) {
 	int retorno = -1;
 	int i;
 	if (pArray != NULL && limite > 0) {
-		printf("\n______________________________");
+		printf("\n_______________________________");
 		printf("\n| ID:      |  Descripcion:    | ");
 		printf("\n|__________|__________________|\n");
 		for (i = 0; i < limite; i++) {

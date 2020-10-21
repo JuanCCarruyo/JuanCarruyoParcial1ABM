@@ -26,7 +26,7 @@
 int main(void) {
 	setbuf(stdout, NULL);
 
-	Marca marcas[]={{1000, "Wirpool",0}, {1001, "Sony   ",0}, {1002, "Liliana",0}, {1003, "Gafa   ",0}, {1004, "Philips\0",0}};
+	Marca marcas[]={{1000, "Wirpool",0}, {1001, "Sony   ",0}, {1002, "Liliana",0}, {1003, "Gafa   ",0}, {1004, "Philips",0}};
 
 	Servicio servicio[]= {{20000, "Garantia     ", 250,0}, {20001, "Mantenimiento", 500,0}, {20002, "Repuestos    ", 400,0}, {20003, "Refaccion    \0", 600,0}};
                                    //8                            13                               9                           9
@@ -44,7 +44,6 @@ int main(void) {
 	int resultadoMenu;
 	int resultadoCargaElectro;
 	int flagAltaElectro;
-	int flagAltaReparacion;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
 	int resultadoRemoveElectro;
@@ -91,12 +90,11 @@ int main(void) {
 			}
 
 			switch (opcion) {
-			case 1: // ALTA ELECTRODOMESTICO
+			case 1:
 				flagAltaElectro = 1;
 
 				resultadoCargaElectro = altaElectro(arrayElectro, marcas, MAX, &contElectro);
 				if (resultadoCargaElectro != 0) {
-					flagAltaElectro = 0;
 					printf("\nError en la Carga.\n");
 					system("pause");
 				}
@@ -104,7 +102,7 @@ int main(void) {
 
 				break;
 
-			case 2: //MODIFICAR ELECTRODOMESTICO
+			case 2:
 				if(flagAltaElectro == 1)
 				{
 
@@ -141,7 +139,7 @@ int main(void) {
 				}
 
 				break;
-			case 3: //BAJA ELECTRODOMESTICO
+			case 3:
 
 				if(flagAltaElectro == 1)
 				{
@@ -178,7 +176,7 @@ int main(void) {
 				}
 
 				break;
-			case 4: //LISTAR ELECTRODOMESTICO
+			case 4:
 
 				resultadoSortElectro = sortElectro(arrayElectro, MAX, 1);
 				if (resultadoSortElectro != 0) {
@@ -195,7 +193,7 @@ int main(void) {
 				break;
 
 
-			case 5: //LISTAR MARCAS
+			case 5:
 
 				resultadoPrintMarca = printMarca(marcas,MAX);
 				if (resultadoPrintMarca != 0)
@@ -208,9 +206,9 @@ int main(void) {
 				break;
 
 
-			case 6: //LISTAR SERVICIOS
+			case 6:
 
-				resultadoPrintServicio = printServicio(servicio,4);
+				resultadoPrintServicio = printServicio(servicio,MAX);
 				if (resultadoPrintServicio != 0)
 				{
 					printf("\nError mostrando los servicios.\n");
@@ -221,14 +219,12 @@ int main(void) {
 
 				break;
 
-			case 7: //ALTA REPARACION
+			case 7:
 				if(flagAltaElectro == 1)
 				{
-					flagAltaReparacion = 1;
 
 					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, MAX, &contRep, &contFecha);
 					if (resultadoAltaReparacion != 0) {
-						flagAltaReparacion = 0;
 						printf("\nError en la Carga.\n");
 						system("pause");
 					}
@@ -244,9 +240,9 @@ int main(void) {
 
 				break;
 
-			case 8: //LISTAR REPARACIONES
+			case 8:
 
-				if(flagAltaElectro == 1 && flagAltaReparacion == 1)
+				if(flagAltaElectro == 1)
 				{
 					resultadoPrintRep = printRep(arrayRep, MAX);
 					if (resultadoPrintRep != 0) {

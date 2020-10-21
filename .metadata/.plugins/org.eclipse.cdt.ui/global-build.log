@@ -1,4 +1,4 @@
-13:56:31 **** Incremental Build of configuration Debug for project Parcial1 ****
+14:46:53 **** Incremental Build of configuration Debug for project Parcial1 ****
 Info: Internal Builder is used for build
-gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\servicio.o" "..\\src\\servicio.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\reparacion.o" "..\\src\\reparacion.c" 
 gcc -o Parcial1.exe "src\\Parcial1.o" "src\\electrodomestico.o" "src\\fecha.o" "src\\marca.o" "src\\reparacion.o" "src\\servicio.o" "src\\utnInputs.o" 
