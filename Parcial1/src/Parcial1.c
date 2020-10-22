@@ -62,9 +62,8 @@ int main(void) {
 
 	int opcion2;
 	int resultadoMenuInformes;
-	int mayorMarca=0;
-	int resCheckMayorMarca;
-	int idMarcaPos;
+	int resContadoresMarcas;
+
 
 	int inputID;
 
@@ -290,16 +289,11 @@ int main(void) {
 				resultadoMenuInformes = getInt(&opcion2,
 						"Menu de Opciones\n"
 						"1- INFORMAR LA MARCA CON MAS ELECTRODOMESTICOS \n"
-						"2- MODIFICAR ELECTRODOMESTICO\n"
-						"3- BAJA ELECTRODOMESTICO\n"
-						"4- LISTAR ELECTRODOMESTICO \n"
-						"5- LISTAR MARCAS \n"
-						"6- LISTAR SERVICIOS \n"
-						"7- LISTAR CLIENTES \n"
-						"8- ALTA REPARACION \n"
-						"9- LISTAR REPARACIONES \n"
-						"10- LISTAR INFORMES \n",
-								"\nError: Seleccione una opcion valida.\n", 1, 10, 3);
+						"2- INFORMAR \n"
+						"3- INFORMAR \n"
+						"4- INFORMAR  \n"
+						"5- INFORMAR  \n",
+								"\nError: Seleccione una opcion valida.\n", 1, 5, 3);
 
 				if (resultadoMenuInformes != 0) {
 					printf("\nERROR FATAL");
@@ -312,14 +306,12 @@ int main(void) {
 
 				case 1:
 
-					resCheckMayorMarca = checkMayorMarca(arrayElectro,MAX,&mayorMarca);
-					idMarcaPos = findMarcaById(marcas, MAX, mayorMarca);
-					if (resCheckMayorMarca != 0) {
+					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX);
+					if (resContadoresMarcas != 0) {
 						printf("\nERROR FATAL");
 						system("pause");
 						break;
 					}
-					printf("La Marca con mas electrodomesticos es %s.",marcas[idMarcaPos].marcDesc);
 					system("pause");
 
 					break;

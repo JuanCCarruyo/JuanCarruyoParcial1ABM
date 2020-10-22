@@ -332,3 +332,53 @@ int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca)
 
 	return retorno;
 }
+
+int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite)
+{
+	int retorno = -1;
+	int i;
+	int j;
+
+
+	int contadorElectro[5];
+	int max=-1;
+	char descMarcaMax[21];
+
+
+
+	if (pElectro != NULL && pMarca != NULL && limite > 0) {
+			for (i = 0; i < 5; i++)
+			{
+				contadorElectro[i]=0;
+			}
+			for (i = 0; i < 5; i++)
+			{
+				for (j = 0; j < limite; j++)
+				{
+					if(pElectro[j].idMarca == pMarca[i].id && pElectro[j].isEmpty == 0)
+					{
+						contadorElectro[i]++;
+					}
+				}
+			}
+
+			for (i = 0; i < 5; i++)
+			{
+				if(max<contadorElectro[i])
+				{
+					max = contadorElectro[i];
+					strncpy(descMarcaMax,pMarca[i].marcDesc,21);
+				}
+			}
+
+
+
+
+			printf("\nLa Marca con mas electrodomesticos es %s\n",descMarcaMax);
+
+			retorno = 0;
+
+		}
+
+	return retorno;
+}

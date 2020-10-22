@@ -129,4 +129,13 @@ int findEmptyE(Electro *pArray, int limite, int *pos);
  */
 int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca);
 
+/*
+ * \brief Cuenta la cantidad de electrodomesticos de la misma marca
+ *  \param Array de tipo electrodomesticos
+ *  \param Array de tipo marcas
+ *  \param Tamanio maximo de la lista
+ *  \return	Retorna 0 si realiza las cuentas con exito, -1 si no.
+ */
+int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite);
+
 #endif /* ELECTRODOMESTICO_H_ */
