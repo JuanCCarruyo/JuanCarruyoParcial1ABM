@@ -20,6 +20,7 @@
 #include "electrodomestico.h"
 #include "servicio.h"
 #include "reparacion.h"
+#include "cliente.h"
 
 #define MAX 5
 
@@ -33,6 +34,7 @@ int main(void) {
 	Electro arrayElectro[MAX];
 	Reparacion arrayRep[MAX];
 	eFecha arrayFecha[MAX];
+	Cliente arrayClientes[MAX];
 	int contElectro=0;
 	int contRep=0;
 	int contFecha=0;
@@ -43,7 +45,7 @@ int main(void) {
 	int resultadoInicializar3;
 	int resultadoMenu;
 	int resultadoCargaElectro;
-	int flagAltaElectro;
+	int flagAltaElectro=1;
 	int flagAltaReparacion;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
@@ -52,16 +54,25 @@ int main(void) {
 	int resultadoModifyElectro;
 	int resultadoPrintMarca;
 	int resultadoPrintServicio;
+	int resultadoPrintCliente;
 	int resultadoSortElectro;
 	int resultadoPrintElectro;
 	int resultadoPrintRep;
 	int resultadoAltaReparacion;
+
+	int opcion2;
+	int resultadoMenuInformes;
+	int mayorMarca=0;
+	int resCheckMayorMarca;
+	int idMarcaPos;
 
 	int inputID;
 
 	resultadoInicializar = initElectro(arrayElectro, MAX);
 	resultadoInicializar2 = initRep(arrayRep, MAX);
 	resultadoInicializar3 = initFecha(arrayFecha, MAX);
+	harcodeoClientes(arrayClientes,MAX);
+	harcodeoElectro(arrayElectro,MAX);
 
 	do {
 			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1) {
@@ -80,9 +91,11 @@ int main(void) {
 					"4- LISTAR ELECTRODOMESTICO \n"
 					"5- LISTAR MARCAS \n"
 					"6- LISTAR SERVICIOS \n"
-					"7- ALTA REPARACION \n"
-					"8- LISTAR REPARACIONES \n",
-							"\nError: Seleccione una opcion valida.\n", 1, 8, 3);
+					"7- LISTAR CLIENTES \n"
+					"8- ALTA REPARACION \n"
+					"9- LISTAR REPARACIONES \n"
+					"10- LISTAR INFORMES \n",
+							"\nError: Seleccione una opcion valida.\n", 1, 10, 3);
 
 			if (resultadoMenu != 0) {
 				printf("\nERROR FATAL");
@@ -161,7 +174,7 @@ int main(void) {
 							system("pause");
 						} else {
 							resultadoRemoveElectro = removeElectro(arrayElectro,
-							MAX, resultadoFindElectroById);
+							MAX, resultadoFindElectroById, &contElectro);
 							if (resultadoRemoveElectro != 0) {
 								printf("\nError removiendo electrodomestico.\n");
 								system("pause");
@@ -186,7 +199,7 @@ int main(void) {
 					system("pause");
 				}
 
-				resultadoPrintElectro = printElectro(arrayElectro, MAX);
+				resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
 				if (resultadoPrintElectro != 0) {
 					printf("\nError mostrando los empleados.\n");
 					system("pause");
@@ -221,34 +234,43 @@ int main(void) {
 
 				break;
 
-			case 7: //ALTA REPARACION
+			case 7: //LISTAR CLIENTES
+
+				resultadoPrintCliente = printCliente(arrayClientes,MAX);
+				if (resultadoPrintCliente != 0)
+				{
+					printf("\nError mostrando los clientes.\n");
+					system("pause");
+				}
+				system("pause");
+
+
+				break;
+
+			case 8:  //ALTA REPARACION
 				if(flagAltaElectro == 1)
 				{
 					flagAltaReparacion = 1;
 
-					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, MAX, &contRep, &contFecha);
+					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, arrayClientes, MAX, &contRep, &contFecha);
 					if (resultadoAltaReparacion != 0) {
 						flagAltaReparacion = 0;
 						printf("\nError en la Carga.\n");
 						system("pause");
 					}
-
 				}
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de hacer una reparacion. \n");
 				}
 
-
-
-
 				break;
 
-			case 8: //LISTAR REPARACIONES
+			case 9: //LISTAR REPARACIONES
 
 				if(flagAltaElectro == 1 && flagAltaReparacion == 1)
 				{
-					resultadoPrintRep = printRep(arrayRep, MAX);
+					resultadoPrintRep = printRep(arrayRep, arrayClientes, servicio, MAX);
 					if (resultadoPrintRep != 0) {
 						printf("\nError mostrando las reparaciones.\n");
 						system("pause");
@@ -260,6 +282,54 @@ int main(void) {
 				{
 					printf("\nDebe cargar algun electrodomestico antes de hacer una reparacion. \n");
 				}
+
+				break;
+
+			case 10: //INFORMES
+
+				resultadoMenuInformes = getInt(&opcion2,
+						"Menu de Opciones\n"
+						"1- INFORMAR LA MARCA CON MAS ELECTRODOMESTICOS \n"
+						"2- MODIFICAR ELECTRODOMESTICO\n"
+						"3- BAJA ELECTRODOMESTICO\n"
+						"4- LISTAR ELECTRODOMESTICO \n"
+						"5- LISTAR MARCAS \n"
+						"6- LISTAR SERVICIOS \n"
+						"7- LISTAR CLIENTES \n"
+						"8- ALTA REPARACION \n"
+						"9- LISTAR REPARACIONES \n"
+						"10- LISTAR INFORMES \n",
+								"\nError: Seleccione una opcion valida.\n", 1, 10, 3);
+
+				if (resultadoMenuInformes != 0) {
+					printf("\nERROR FATAL");
+					system("pause");
+					break;
+				}
+
+				switch(opcion2)
+				{
+
+				case 1:
+
+					resCheckMayorMarca = checkMayorMarca(arrayElectro,MAX,&mayorMarca);
+					idMarcaPos = findMarcaById(marcas, MAX, mayorMarca);
+					if (resCheckMayorMarca != 0) {
+						printf("\nERROR FATAL");
+						system("pause");
+						break;
+					}
+					printf("La Marca con mas electrodomesticos es %s.",marcas[idMarcaPos].marcDesc);
+					system("pause");
+
+					break;
+
+
+
+
+
+				}
+
 
 
 				break;

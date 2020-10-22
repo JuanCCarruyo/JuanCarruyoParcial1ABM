@@ -55,9 +55,15 @@ int getString(char* input,char mensaje[],char mensajeError[],int min,int max,int
  *
  */
 int valCharacter(char* string,int max);
+
+/** \brief Menu de letras, de la "A" a la letra maxima ingresada
+ *
+ * \param Opcion de menu a seleccionar
+ * \param max Letra maxima a ingresar
+ * \return Retorna 0 si se selecciona una opcion con exito y -1 si no
+ *
+ */
 int charMenu(char* opcion,int max);
 
-int findEmptyE(Electro *pArray, int limite, int *pos);
-int findEmptyR(Reparacion *pArray, int limite, int *pos);
-int findEmptyF(eFecha *pArray, int limite, int *pos);
+
 #endif /* UTNINPUTS_H_ */

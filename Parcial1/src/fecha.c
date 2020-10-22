@@ -118,7 +118,7 @@ int addFecha(eFecha *pArray, int limite, int dia, int mes, int anio, int *contFe
 		contador++;
 		*contFecha = contador;
 
-//		pArray[i].id = *contFecha;
+		pArray[i].id = *contFecha;
 		pArray[i].dia = dia;
 		pArray[i].mes = mes;
 		pArray[i].anio = anio;
@@ -134,6 +134,43 @@ int addFecha(eFecha *pArray, int limite, int dia, int mes, int anio, int *contFe
 	return retorno;
 }
 
+int removeFecha(eFecha *pArray, int limite, int id, int *contFecha) {
+	int retorno = -1;
+	int contador = *contFecha;
+
+	if (pArray != NULL && limite > 0) {
+		pArray[id].isEmpty = 1;
+		contador--;
+		*contFecha = contador;
+		retorno = 0;
+	}
+	return retorno;
+}
+
+
+int findFechaById(eFecha *pArray, int limite, int id) {
+	int retorno = -1;
+	int i;
+	int flag = 0;
+
+	if (pArray != NULL && limite > 0){
+	for (i = 0; i < limite; i++) {
+		if (pArray[i].isEmpty != 1) {
+			if (pArray[i].id == id) {
+				flag = 1;
+				retorno = i;
+				break;
+			}
+		}
+	}}
+
+	if (flag == 0) {
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
 int initFecha(eFecha *pArray, int limite) {
 	int retorno = -1;
 	int i;
@@ -144,6 +181,23 @@ int initFecha(eFecha *pArray, int limite) {
 		}
 		retorno = 0;
 	}
+	return retorno;
+}
+
+int findEmptyF(eFecha *pArray, int limite, int *pos) {
+	int retorno = -1;
+	int i;
+
+	if (pArray != NULL && limite > 0 && pos != NULL) {
+		for (i = 0; i < limite; i++) {
+			if (pArray[i].isEmpty == 1) {
+				retorno = 0;
+				*pos = i;
+				break;
+			}
+		}
+	}
+
 	return retorno;
 }
 

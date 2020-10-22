@@ -17,6 +17,25 @@
 #define NAMELIMIT 51
 #define MAX 5
 
+void harcodeoElectro(Electro *pArray,int limite)
+{
+	int i;
+	int id[5]={1,2,3,4,5};
+	int serie[5]={11111,22222,33333,44444,55555};
+	int idMarca[5]={1000,1001,1001,1003,1004};
+	int modelo[5]={1990,1995,2001,2013,2020};
+
+	for (i = 0; i < 5; i++){
+
+		pArray[i].id=id[i];
+		pArray[i].serie=serie[i];
+		pArray[i].idMarca=idMarca[i];
+		pArray[i].modelo=modelo[i];
+
+		pArray[i].isEmpty = 0;
+	}
+}
+
 int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 
 	int resultadoAddElectro = 0;
@@ -27,7 +46,7 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 	int serie;
 	int idMarca;
 	int modelo;
-	int rescheckMarca;
+	int rescheckMarca=0;
 
 
 
@@ -39,6 +58,9 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 			"\nERROR: Serie debe ser de 5 digitos", 10000, 99999, 10);
 
 	do{
+		if(rescheckMarca != 0){
+			printf("\nError, ingrese un ID valido: ");
+		}
 	printf("\nIngrese el ID de la marca: ");
 	scanf("%d", &idMarca);
 	rescheckMarca = checkMarca(pMarca, limite, idMarca);
@@ -65,14 +87,16 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 
 }
 
-int checkMarca(Marca *pArray, int limite, int inputMarca)
+
+
+int checkElectro(Electro *pElectro, int limite, int inputElectro)
 {
 	int retorno = -1;
 	int i;
 
-	if (pArray != NULL && limite > 0) {
+	if (pElectro != NULL && limite > 0) {
 			for (i = 0; i < limite; i++) {
-				if (pArray[i].id == inputMarca) {
+				if (pElectro[i].id == inputElectro) {
 					retorno = 0;
 					break;
 				}
@@ -82,8 +106,6 @@ int checkMarca(Marca *pArray, int limite, int inputMarca)
 
 	return retorno;
 }
-
-
 int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int modelo, int *contElectro) {
 	int retorno = -1;
 	int i;
@@ -109,17 +131,23 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
 	return retorno;
 }
 
-int printElectro(Electro *pArray, int limite) {
+int printElectro(Electro *pArray, Marca *pMarca, int limite) {
 	int retorno = -1;
 	int i;
+	int idMarca;
+	int idMarcaPos;
 	if (pArray != NULL && limite > 0) {
-		printf("\n_________________________________________________________________");
-		printf("\n| ID:      |     Serie:    |     ID Marca:     |    Modelo:      | ");
-		printf("\n|__________|_______________|___________________|_________________|\n");
+		printf("\n_________________________________________________________");
+		printf("\n| ID:      |  Serie:       | Marca:         | Modelo:    | ");
+		printf("\n|__________|_______________|________________|____________|\n");
 		for (i = 0; i < limite; i++) {
 			if (pArray[i].isEmpty != 1) {
-				printf("|%d         |   %d       |       %d        |     %d    \n",
-							pArray[i].id,    pArray[i].serie,      pArray[i].idMarca,       pArray[i].modelo);
+
+				idMarca = pArray[i].idMarca;
+				idMarcaPos = findMarcaById(pMarca, limite, idMarca);
+
+				printf("|%d         |   %d       | %s        |  %d      |\n",
+				pArray[i].id,    pArray[i].serie,   pMarca[idMarcaPos].marcDesc,    pArray[i].modelo);
 			}
 		}
 		retorno = 0;
@@ -140,11 +168,14 @@ int initElectro(Electro *pArray, int limite) {
 	return retorno;
 }
 
-int removeElectro(Electro *pArray, int limite, int id) {
+int removeElectro(Electro *pArray, int limite, int id, int *contElectro) {
 	int retorno = -1;
+	int contador = *contElectro;
 
 	if (pArray != NULL && limite > 0) {
 		pArray[id].isEmpty = 1;
+		contador--;
+		*contElectro = contador;
 		retorno = 0;
 	}
 	return retorno;
@@ -250,5 +281,54 @@ int sortElectro(Electro *pArray, int limite, int orden) {
 		}
 		retorno = 0;
 	}
+	return retorno;
+}
+
+int findEmptyE(Electro *pArray, int limite, int *pos) {
+	int retorno = -1;
+	int i;
+
+	if (pArray != NULL && limite > 0 && pos != NULL) {
+		for (i = 0; i < limite; i++) {
+			if (pArray[i].isEmpty == 1) {
+				retorno = 0;
+				*pos = i;
+				break;
+			}
+		}
+	}
+
+	return retorno;
+}
+
+int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca)
+{
+	int retorno = -1;
+	int i;
+	int idMarca;
+	int maxMarca;
+	int flag = 0;
+
+
+
+	if (pElectro != NULL && limite > 0) {
+			for (i = 0; i < limite; i++) {
+				if (pElectro[i].isEmpty != 1) {
+					idMarca = pElectro[i].idMarca;
+
+					if(idMarca > maxMarca || flag == 0)
+					{
+						maxMarca = idMarca;
+						flag = 1;
+					}
+					*mayorMarca = maxMarca;
+
+				}
+			}
+			retorno = 0;
+
+		}
+
+
 	return retorno;
 }
