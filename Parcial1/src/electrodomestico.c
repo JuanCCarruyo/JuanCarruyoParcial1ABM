@@ -333,14 +333,14 @@ int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca)
 	return retorno;
 }
 
-int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite)
+int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite, int *contadorElectro)
 {
 	int retorno = -1;
 	int i;
 	int j;
 
 
-	int contadorElectro[5];
+
 	int max=-1;
 	char descMarcaMax[21];
 

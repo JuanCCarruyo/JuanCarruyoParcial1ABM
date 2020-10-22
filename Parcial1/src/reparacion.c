@@ -18,6 +18,27 @@
 #include "fecha.h"
 #include "cliente.h"
 
+
+void harcodeoReparacion(Reparacion *pArray,int limite)
+{
+	int i;
+	int id[5]={1,2,3,4,5};
+	int serie[5]={20321,69696,40203,20003,20002};
+	int idCliente[5]={4,3,3,4,2};
+	int idServicio[5]={20001,20001,20000,20003,20002};
+	eFecha fecha[]={{1,25,8,2020},{2,13,2,2019},{3,11,9,2001},{4,20,4,2020},{5,4,8,1997}};
+	int isEmpty[5]={0,0,0,0,0};
+	for (i = 0; i < 5; i++){
+
+		pArray[i].id=id[i];
+		pArray[i].idCliente=idCliente[i];
+		pArray[i].serie=serie[i];
+		pArray[i].idServicio=idServicio[i];
+		pArray[i].fecha=fecha[i];
+		pArray[i].isEmpty=isEmpty[i];
+	}
+}
+
 int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, eFecha *pFecha, Cliente *pCliente, int limite, int *contRep, int *contFecha) {
 
 	int resultadoAddRep = 0;
@@ -187,6 +208,58 @@ int findEmptyR(Reparacion *pArray, int limite, int *pos) {
 			}
 		}
 	}
+
+	return retorno;
+}
+
+int contadoresClientes(Reparacion *pArray, Cliente *pCliente, int limite, int *contadorCliente)
+{
+	int retorno = -1;
+	int i;
+	int j;
+
+
+
+	int max=-1;
+	char nombre[51];
+	char apellido[51];
+
+
+
+	if (pArray != NULL && pCliente != NULL && limite > 0) {
+			for (i = 0; i < 5; i++)
+			{
+				contadorCliente[i]=0;
+			}
+			for (i = 0; i < 5; i++)
+			{
+				for (j = 0; j < limite; j++)
+				{
+					if(pArray[j].idCliente == pCliente[i].id && pArray[j].isEmpty == 0)
+					{
+						contadorCliente[i]++;
+					}
+				}
+			}
+
+			for (i = 0; i < 5; i++)
+			{
+				if(max<contadorCliente[i])
+				{
+					max = contadorCliente[i];
+					strncpy(nombre,pCliente[i].nombre,51);
+					strncpy(apellido,pCliente[i].apellido,51);
+				}
+			}
+
+
+
+
+			printf("\nEl cliente con mas reparaciones es %s %s\n",nombre,apellido);
+
+			retorno = 0;
+
+		}
 
 	return retorno;
 }

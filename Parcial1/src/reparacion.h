@@ -24,6 +24,14 @@ int isEmpty;
 }Reparacion;
 
 /*
+ * \brief Carga de manera automatica algunas reparaciones.
+ * \param Array de tipo reparacion
+ * \param Tamanio de la lista de reparacion
+ * \return Es void, no retorna.
+ */
+void harcodeoReparacion(Reparacion *pArray,int limite);
+
+/*
  * \brief Realiza el ingreso de la carga de una reparacion nueva al array de reparacion.
  * \param Array de tipo reparacion
  * \param Array de tipo electrodomesticos
@@ -77,5 +85,8 @@ int initRep(Reparacion *pArray, int limite);
  *  \return Retorna 0 si encuentra un espacio vacio, -1 si no lo encuentra
  */
 int findEmptyR(Reparacion *pArray, int limite, int *pos);
+
+
+int contadoresClientes(Reparacion *pArray, Cliente *pCliente, int limite, int *contadorCliente);
 
 #endif /* REPARACION_H_ */

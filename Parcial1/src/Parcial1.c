@@ -46,7 +46,7 @@ int main(void) {
 	int resultadoMenu;
 	int resultadoCargaElectro;
 	int flagAltaElectro=1;
-	int flagAltaReparacion;
+	int flagAltaReparacion=1;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
 	int resultadoRemoveElectro;
@@ -59,10 +59,14 @@ int main(void) {
 	int resultadoPrintElectro;
 	int resultadoPrintRep;
 	int resultadoAltaReparacion;
+	int resContadoresClientes;
 
 	int opcion2;
 	int resultadoMenuInformes;
 	int resContadoresMarcas;
+
+	int contadorElectro[MAX];
+	int contadorCliente[MAX];
 
 
 	int inputID;
@@ -72,6 +76,7 @@ int main(void) {
 	resultadoInicializar3 = initFecha(arrayFecha, MAX);
 	harcodeoClientes(arrayClientes,MAX);
 	harcodeoElectro(arrayElectro,MAX);
+	harcodeoReparacion(arrayRep,MAX);
 
 	do {
 			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1) {
@@ -289,7 +294,7 @@ int main(void) {
 				resultadoMenuInformes = getInt(&opcion2,
 						"Menu de Opciones\n"
 						"1- INFORMAR LA MARCA CON MAS ELECTRODOMESTICOS \n"
-						"2- INFORMAR \n"
+						"2- INFORMAR EL CLIENTE CON MAS REPARACIONES\n"
 						"3- INFORMAR \n"
 						"4- INFORMAR  \n"
 						"5- INFORMAR  \n",
@@ -306,13 +311,26 @@ int main(void) {
 
 				case 1:
 
-					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX);
+					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX, contadorElectro);
 					if (resContadoresMarcas != 0) {
 						printf("\nERROR FATAL");
 						system("pause");
 						break;
 					}
 					system("pause");
+
+					break;
+
+				case 2:
+
+					resContadoresClientes = contadoresClientes(arrayRep, arrayClientes, MAX, contadorCliente);
+					if (resContadoresClientes != 0) {
+						printf("\nERROR FATAL");
+						system("pause");
+						break;
+					}
+					system("pause");
+
 
 					break;
 
@@ -329,7 +347,7 @@ int main(void) {
 
 			}
 
-		} while (opcion == 1 || opcion == 2 || opcion == 3 || opcion == 4 || opcion == 5 || opcion == 6 || opcion == 7 || opcion == 8);
+		} while (opcion == 1 || opcion == 2 || opcion == 3 || opcion == 4 || opcion == 5 || opcion == 6 || opcion == 7 || opcion == 8|| opcion == 9 || opcion == 10);
 
 
 	return EXIT_SUCCESS;

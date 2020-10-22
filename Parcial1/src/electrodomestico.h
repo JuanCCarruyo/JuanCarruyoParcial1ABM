@@ -136,6 +136,6 @@ int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca);
  *  \param Tamanio maximo de la lista
  *  \return	Retorna 0 si realiza las cuentas con exito, -1 si no.
  */
-int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite);
+int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite, int *contadorElectro);
 
 #endif /* ELECTRODOMESTICO_H_ */
