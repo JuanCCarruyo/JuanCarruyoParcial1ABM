@@ -10,8 +10,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "electrodomestico.h"
 #include "utnInputs.h"
+#include "electrodomestico.h"
 #include "marca.h"
 
 #define NAMELIMIT 51
@@ -21,9 +21,9 @@ void harcodeoElectro(Electro *pArray,int limite)
 {
 	int i;
 	int id[5]={1,2,3,4,5};
-	int serie[5]={11111,22222,33333,44444,55555};
+	int serie[5]={11111,22222,42003,44444,55555};
 	int idMarca[5]={1000,1001,1001,1003,1004};
-	int modelo[5]={1990,1995,2001,2013,2020};
+	int modelo[5]={1990,2018,2020,2018,2020};
 
 	for (i = 0; i < 5; i++){
 
@@ -39,6 +39,7 @@ void harcodeoElectro(Electro *pArray,int limite)
 int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 
 	int resultadoAddElectro = 0;
+	int resultadoPrintMarca = 0;
 	int retorno = -1;
 
 
@@ -61,6 +62,12 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 		if(rescheckMarca != 0){
 			printf("\nError, ingrese un ID valido: ");
 		}
+	resultadoPrintMarca = printMarca(pMarca,limite);
+	if (resultadoPrintMarca != 0)
+	{
+		printf("\nError mostrando las marcas.\n");
+		system("pause");
+	}
 	printf("\nIngrese el ID de la marca: ");
 	scanf("%d", &idMarca);
 	rescheckMarca = checkMarca(pMarca, limite, idMarca);
@@ -204,6 +211,29 @@ int findElectroById(Electro *pArray, int limite, int id) {
 	return retorno;
 }
 
+int findElectroBySerie(Electro *pArray, int limite, int serie) {
+	int retorno = -1;
+	int i;
+	int flag = 0;
+
+	if (pArray != NULL && limite > 0){
+	for (i = 0; i < limite; i++) {
+		if (pArray[i].isEmpty != 1) {
+			if (pArray[i].serie == serie) {
+				flag = 1;
+				retorno = i;
+				break;
+			}
+		}
+	}}
+
+	if (flag == 0) {
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
 int modifyElectro(Electro* pArray, int indice)
 {
 	int retorno = -1;
@@ -333,52 +363,34 @@ int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca)
 	return retorno;
 }
 
-int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite, int *contadorElectro)
+
+
+
+
+int mostrarElectroAnioServ(Electro *pElectro, Reparacion *pRepAnio, Servicio *pServicio, int limite, int anio)
 {
 	int retorno = -1;
 	int i;
-	int j;
 
-
-
-	int max=-1;
-	char descMarcaMax[21];
-
-
-
-	if (pElectro != NULL && pMarca != NULL && limite > 0) {
-			for (i = 0; i < 5; i++)
+		for (i = 0; i < limite; i++)
+		{
+			if(pElectro[i].modelo == anio && pElectro[i].isEmpty == 0)
 			{
-				contadorElectro[i]=0;
+				pRepAnio[i].id = pElectro[i].id;
+				pRepAnio[i].serie = pElectro[i].serie;
+				pRepAnio[i].idCliente = pElectro[i].idMarca;
+				pRepAnio[i].idServicio = pElectro[i].modelo;
+				pRepAnio[i].isEmpty = pElectro[i].isEmpty;
+				retorno = 0;
 			}
-			for (i = 0; i < 5; i++)
-			{
-				for (j = 0; j < limite; j++)
-				{
-					if(pElectro[j].idMarca == pMarca[i].id && pElectro[j].isEmpty == 0)
-					{
-						contadorElectro[i]++;
-					}
-				}
-			}
-
-			for (i = 0; i < 5; i++)
-			{
-				if(max<contadorElectro[i])
-				{
-					max = contadorElectro[i];
-					strncpy(descMarcaMax,pMarca[i].marcDesc,21);
-				}
-			}
-
-
-
-
-			printf("\nLa Marca con mas electrodomesticos es %s\n",descMarcaMax);
-
-			retorno = 0;
-
 		}
 
-	return retorno;
+		initRep(pRepAnio, limite);
+
+		return retorno;
+
 }
+
+
+
+

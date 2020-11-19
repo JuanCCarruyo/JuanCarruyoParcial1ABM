@@ -21,6 +21,7 @@
 #include "servicio.h"
 #include "reparacion.h"
 #include "cliente.h"
+#include "informes.h"
 
 #define MAX 5
 
@@ -35,6 +36,7 @@ int main(void) {
 	Reparacion arrayRep[MAX];
 	eFecha arrayFecha[MAX];
 	Cliente arrayClientes[MAX];
+	Electro pElectroSinRep[MAX];
 	int contElectro=0;
 	int contRep=0;
 	int contFecha=0;
@@ -45,8 +47,6 @@ int main(void) {
 	int resultadoInicializar3;
 	int resultadoMenu;
 	int resultadoCargaElectro;
-	int flagAltaElectro=1;
-	int flagAltaReparacion=1;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
 	int resultadoRemoveElectro;
@@ -60,6 +60,18 @@ int main(void) {
 	int resultadoPrintRep;
 	int resultadoAltaReparacion;
 	int resContadoresClientes;
+	int resMostrarElectro2020;
+	int resultadoInicializar4;
+	int resMostrarElectroMarca;
+	int resultadoInicializar5;
+	int resrepElectroSelecc;
+	int resMostrarElectroSinRep;
+	int resInformeTotalRep;
+	int resContadorServicio;
+	int resMostrarTrabajosAElectro2018;
+	int resRecaudacionPorFecha;
+	int resprintGarantia;
+	int resrecaudacionDeMant;
 
 	int opcion2;
 	int resultadoMenuInformes;
@@ -69,17 +81,40 @@ int main(void) {
 	int contadorCliente[MAX];
 
 
+
 	int inputID;
 
+	Electro pElectro2020[MAX];
+	Electro pElectroMarca[MAX];
+
+	Reparacion pRepElec[MAX];
+	Reparacion pInformeTotalRep[MAX];
+	Reparacion pTrabajosAElectro2018[MAX];
+
 	resultadoInicializar = initElectro(arrayElectro, MAX);
+
 	resultadoInicializar2 = initRep(arrayRep, MAX);
 	resultadoInicializar3 = initFecha(arrayFecha, MAX);
+
+	resultadoInicializar4 = initElectro(pElectro2020, MAX);
+	resultadoInicializar5 = initElectro(pElectroMarca, MAX);
+
+	resultadoInicializar5 = initRep(pRepElec, MAX);
+	resultadoInicializar5 = initElectro(pElectroSinRep, MAX);
+	resultadoInicializar5 = initRep(pInformeTotalRep, MAX);
+	resultadoInicializar5 = initRep(pTrabajosAElectro2018, MAX);
+
 	harcodeoClientes(arrayClientes,MAX);
+
+	//hardcore for testing
 	harcodeoElectro(arrayElectro,MAX);
 	harcodeoReparacion(arrayRep,MAX);
+	int flagAltaElectro=1;
+	int flagAltaReparacion=1;
+	//hardcode end
 
 	do {
-			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1) {
+			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1 || resultadoInicializar4 == -1 || resultadoInicializar5 == -1) {
 				printf("\nERROR AL INICIALIZAR");
 				system("pause");
 				break;
@@ -124,7 +159,11 @@ int main(void) {
 			case 2: //MODIFICAR ELECTRODOMESTICO
 				if(flagAltaElectro == 1)
 				{
-
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if (resultadoPrintElectro != 0) {
+						printf("\nError mostrando los electrodomesticos.\n");
+						system("pause");
+					}
 					resultadoModElectro = getInt(&inputID, "\nIngrese el ID del electrodomestico: ",
 							"\nERROR: Ingrese un ID valido", 1, MAX, 10);
 
@@ -155,6 +194,7 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de Modificar. \n");
+					system("pause");
 				}
 
 				break;
@@ -192,11 +232,13 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de Bajar. \n");
+					system("pause");
 				}
 
 				break;
 			case 4: //LISTAR ELECTRODOMESTICO
 
+				if(flagAltaElectro == 1){
 				resultadoSortElectro = sortElectro(arrayElectro, MAX, 1);
 				if (resultadoSortElectro != 0) {
 					printf("\nError en el ordenamiento.\n");
@@ -205,10 +247,18 @@ int main(void) {
 
 				resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
 				if (resultadoPrintElectro != 0) {
-					printf("\nError mostrando los empleados.\n");
+					printf("\nError mostrando los electrodomesticos.\n");
 					system("pause");
 				}
 				system("pause");
+				}
+				else
+				{
+					printf("\nDebe cargar algun electrodomestico antes de listar. \n");
+					system("pause");
+				}
+
+
 				break;
 
 
@@ -256,6 +306,11 @@ int main(void) {
 				{
 					flagAltaReparacion = 1;
 
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if (resultadoPrintElectro != 0) {
+						printf("\nError mostrando los electrodomesticos.\n");
+						system("pause");
+					}
 					resultadoAltaReparacion = altaReparacion(arrayRep, arrayElectro, servicio, arrayFecha, arrayClientes, MAX, &contRep, &contFecha);
 					if (resultadoAltaReparacion != 0) {
 						flagAltaReparacion = 0;
@@ -285,6 +340,7 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de hacer una reparacion. \n");
+					system("pause");
 				}
 
 				break;
@@ -293,12 +349,19 @@ int main(void) {
 
 				resultadoMenuInformes = getInt(&opcion2,
 						"Menu de Opciones\n"
-						"1- INFORMAR LA MARCA CON MAS ELECTRODOMESTICOS \n"
-						"2- INFORMAR EL CLIENTE CON MAS REPARACIONES\n"
-						"3- INFORMAR \n"
-						"4- INFORMAR  \n"
-						"5- INFORMAR  \n",
-								"\nError: Seleccione una opcion valida.\n", 1, 5, 3);
+						"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
+						"2- Mostrar Electrodomesticos de una marca seleccionada\n"
+						"3- Mostrar todos las reparaciones efectuadas al Electrodoméstico seleccionado \n"
+						"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
+						"5- Informar importe total de las reparaciones realizadas a un Electrodoméstico seleccionado  \n"
+						"6- Mostrar el servicio más pedido \n"
+						"7- Mostrar la recaudación en una fecha en particular\n"
+						"8- Mostrar todos los Electrodomésticos que realizaron una garantía y la fecha\n"
+						"9- Trabajos realizados a Electrodomésticos del año(modelo) 2018\n"
+						"10- Facturación total por los mantenimientos\n"
+						"11- Informar la marca con mas Electrodomésticos \n"
+						"12- Informar el cliente con mas reparaciones \n",
+								"\nError: Seleccione una opcion valida.\n", 1, 12, 3);
 
 				if (resultadoMenuInformes != 0) {
 					printf("\nERROR FATAL");
@@ -309,7 +372,114 @@ int main(void) {
 				switch(opcion2)
 				{
 
-				case 1:
+				case 1: //"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
+
+					resMostrarElectro2020 = mostrarElectroAnio(arrayElectro, pElectro2020, marcas, MAX, 2020);
+					if (resMostrarElectro2020 != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 2: //"2- Mostrar Electrodomesticos de una marca seleccionada\n"
+
+					resMostrarElectroMarca = mostrarElectroMarca(arrayElectro, marcas, pElectroMarca, MAX);
+					if (resMostrarElectroMarca != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 3: //"3- Mostrar todos las reparaciones efectuadas al Electrodoméstico seleccionado \n"
+
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if (resultadoPrintElectro != 0) {
+						printf("\nError mostrando los electrodomesticos.\n");
+						system("pause");
+					}
+					resrepElectroSelecc = repElectroSelecc(arrayRep, arrayElectro, servicio, arrayClientes, pRepElec, MAX);
+					if (resrepElectroSelecc != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 4: //"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
+
+					resMostrarElectroSinRep = mostrarElectroSinRep(arrayElectro, arrayRep, marcas, pElectroSinRep, MAX);
+					if (resMostrarElectroSinRep != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 5: //"5- Informar importe total de las reparaciones realizadas a un Electrodoméstico seleccionado  \n"
+
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if (resultadoPrintElectro != 0) {
+						printf("\nError mostrando los electrodomesticos.\n");
+						system("pause");
+					}
+					resInformeTotalRep = informeTotalRep(arrayRep, arrayElectro, servicio, pInformeTotalRep, MAX);
+					if (resInformeTotalRep != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+				case 6: //"6- Mostrar el servicio más pedido \n"
+
+					 resContadorServicio = contadorServicio(arrayRep, servicio, MAX);
+						if (resContadorServicio != 0) {
+							printf("\nError mostrando el informe.\n");
+							system("pause");
+						}
+						break;
+
+				case 7: //"7- Mostrar la recaudación en una fecha en particular\n"
+
+					resRecaudacionPorFecha = recaudacionPorFecha(arrayRep, MAX, servicio, arrayFecha, &contFecha);
+					if (resRecaudacionPorFecha != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+				case 8: //"8- Mostrar todos los Electrodomésticos que realizaron una garantía y la fecha\n"
+
+					resprintGarantia = printGarantia(arrayRep, arrayElectro, arrayClientes, marcas, servicio, MAX);
+					if (resprintGarantia != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					system("pause");
+
+					break;
+
+				case 9: //"9- Trabajos realizados a Electrodomésticos del año(modelo) 2018\n"
+
+					resMostrarTrabajosAElectro2018 = mostrarTrabajosAElectro2018(arrayRep, arrayElectro, servicio, pTrabajosAElectro2018, MAX);
+					if (resMostrarTrabajosAElectro2018 != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+				case 10: //"10- Facturación total por los mantenimientos\n"
+
+					resrecaudacionDeMant = recaudacionDeMant(arrayRep, MAX, servicio);
+					if (resrecaudacionDeMant != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+
+				case 11: //"11- Informar la marca con mas Electrodomésticos \n"
 
 					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX, contadorElectro);
 					if (resContadoresMarcas != 0) {
@@ -321,7 +491,7 @@ int main(void) {
 
 					break;
 
-				case 2:
+				case 12: //"12- Informar el cliente con mas reparaciones \n"
 
 					resContadoresClientes = contadoresClientes(arrayRep, arrayClientes, MAX, contadorCliente);
 					if (resContadoresClientes != 0) {

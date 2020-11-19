@@ -8,9 +8,10 @@
 #ifndef REPARACION_H_
 #define REPARACION_H_
 
-#include "fecha.h"
+
 #include "electrodomestico.h"
 #include "servicio.h"
+#include "fecha.h"
 #include "cliente.h"
 
 typedef struct
@@ -22,6 +23,15 @@ int idServicio;
 eFecha fecha;
 int isEmpty;
 }Reparacion;
+
+typedef struct
+{
+    int id;
+    int serie;
+    int idMarca;
+    int modelo;
+    int isEmpty;
+}Electro;
 
 /*
  * \brief Carga de manera automatica algunas reparaciones.
@@ -87,6 +97,6 @@ int initRep(Reparacion *pArray, int limite);
 int findEmptyR(Reparacion *pArray, int limite, int *pos);
 
 
-int contadoresClientes(Reparacion *pArray, Cliente *pCliente, int limite, int *contadorCliente);
+
 
 #endif /* REPARACION_H_ */
