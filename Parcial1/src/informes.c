@@ -17,7 +17,7 @@
 #define MAX 5
 
 //"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
-int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, int limite, int anio)
+int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, Procedencia *pProcedencia, int limite, int anio)
 {
 	int retorno = -1;
 	int i;
@@ -31,12 +31,13 @@ int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, 
 				pElectro2020[i].serie = pElectro[i].serie;
 				pElectro2020[i].idMarca = pElectro[i].idMarca;
 				pElectro2020[i].modelo = pElectro[i].modelo;
+				pElectro2020[i].idPais = pElectro[i].idPais;
 				pElectro2020[i].isEmpty = pElectro[i].isEmpty;
 				retorno = 0;
 			}
 		}
 
-		resultadoPrintElectro = printElectro(pElectro2020, pMarca, limite);
+		resultadoPrintElectro = printElectro(pElectro2020, pMarca, pProcedencia, limite);
 		if (resultadoPrintElectro != 0) {
 			printf("\nError mostrando los electrodomesticos.\n");
 			system("pause");
@@ -49,7 +50,7 @@ int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, 
 }
 
 //"2- Mostrar Electrodomesticos de una marca seleccionada\n"
-int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, int limite)
+int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, Procedencia *pProcedencia, int limite)
 {
 	int retorno = -1;
 	int i;
@@ -74,12 +75,13 @@ int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca
 			pElectroMarca[i].serie = pElectro[i].serie;
 			pElectroMarca[i].idMarca = pElectro[i].idMarca;
 			pElectroMarca[i].modelo = pElectro[i].modelo;
+			pElectroMarca[i].idPais = pElectro[i].idPais;
 			pElectroMarca[i].isEmpty = pElectro[i].isEmpty;
 			retorno = 0;
 		}
 	}
 
-	resultadoPrintElectro = printElectro(pElectroMarca, pMarca, limite);
+	resultadoPrintElectro = printElectro(pElectroMarca, pMarca, pProcedencia, limite);
 	if (resultadoPrintElectro != 0) {
 		printf("\nError mostrando los electrodomesticos.\n");
 		system("pause");
@@ -130,7 +132,7 @@ int repElectroSelecc(Reparacion *pArray, Electro *pElectro, Servicio *pServicio,
 }
 
 //"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
-int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, int limite)
+int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, Procedencia *pProcedencia, int limite)
 {
 	int retorno = -1;
 	int i;
@@ -148,13 +150,14 @@ int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Ele
 			pElectroSinRep[i].serie = pElectro[i].serie;
 			pElectroSinRep[i].idMarca = pElectro[i].idMarca;
 			pElectroSinRep[i].modelo = pElectro[i].modelo;
+			pElectroSinRep[i].idPais = pElectro[i].idPais;
 			pElectroSinRep[i].isEmpty = pElectro[i].isEmpty;
 			retorno = 0;
 		}
 		}
 	}
 
-	resultadoPrintElectro = printElectro(pElectroSinRep, pMarca, limite);
+	resultadoPrintElectro = printElectro(pElectroSinRep, pMarca, pProcedencia, limite);
 	if (resultadoPrintElectro != 0) {
 		printf("\nError mostrando los electrodomesticos.\n");
 		system("pause");
@@ -319,7 +322,7 @@ int recaudacionPorFecha(Reparacion *pArray, int limite, Servicio *pServicio, eFe
 		for (i = 0; i < limite; ++i){
 			if(pArray[i].isEmpty==0){
 				if(aux.dia == pArray[i].fecha.dia && aux.anio == pArray[i].fecha.anio && aux.mes == pArray[i].fecha.mes){
-					for (j = 0; j < 4; ++j){
+					for (j = 0; j < limite; ++j){
 						if(pArray[i].idServicio == pServicio[j].id){
 							totalPrecio += pServicio[j].precio;
 						}
@@ -331,6 +334,7 @@ int recaudacionPorFecha(Reparacion *pArray, int limite, Servicio *pServicio, eFe
 		if(totalPrecio>0){
 			printf("\nEl %d/%d/%d se recaudo: $%.2f\n", aux.dia,aux.mes, aux.anio, totalPrecio);
 			system("pause");
+			totalPrecio = 0;
 		}else{
 			printf("\nNo hay recaudacion para la fecha ingresada.\n");
 			system("pause");

@@ -67,7 +67,7 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, e
 		}
 
 		residElectro = getInt(&idElectro, "\nIngrese el ID del Electrodomestico: ",
-					"\nERROR: Seleccione una Electrodomestico valido", 1, limite, 10);
+					"\nERROR: Seleccione una Electrodomestico valido\n", 1, limite, 10);
 
 	residElectro = checkElectro(pElectro, limite, idElectro);
 	}while (residElectro!=0);
@@ -85,7 +85,7 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, e
 		residServicio = 0;
 	}
 	residServicio = getInt(&idServicio, "\nIngrese el ID del Servicio: ",
-							"\nERROR: Seleccione una servicio valido", 20000, 20003, 10);
+							"\nERROR: Seleccione una servicio valido\n", 20000, 20003, 10);
 
 	residServicio = checkServicio(pServicio, limite, idServicio);
 	}while (residServicio!=0);
@@ -99,9 +99,10 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, e
 		}
 		if(residCliente!=0){
 			printf("\nError, ID invalido: ");
+			residCliente = 0;
 		}
-	printf("\nIngrese el ID del Cliente: ");
-	scanf("%d", &idCliente);
+		residCliente = getInt(&idCliente, "\nIngrese el ID del Cliente: ",
+								"\nERROR: Seleccione un ID valido\n", 1, 5, 10);
 	residCliente = checkCliente(pCliente, limite, idCliente);
 	}while (residCliente!=0);
 

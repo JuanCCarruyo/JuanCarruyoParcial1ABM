@@ -14,6 +14,7 @@
 #include "electrodomestico.h"
 #include "marca.h"
 
+
 #define NAMELIMIT 51
 #define MAX 5
 
@@ -24,6 +25,7 @@ void harcodeoElectro(Electro *pArray,int limite)
 	int serie[5]={11111,22222,42003,44444,55555};
 	int idMarca[5]={1000,1001,1001,1003,1004};
 	int modelo[5]={1990,2018,2020,2018,2020};
+	int idPais[5]={3,2,2,2,4};
 
 	for (i = 0; i < 5; i++){
 
@@ -31,12 +33,13 @@ void harcodeoElectro(Electro *pArray,int limite)
 		pArray[i].serie=serie[i];
 		pArray[i].idMarca=idMarca[i];
 		pArray[i].modelo=modelo[i];
+		pArray[i].idPais = idPais[i];
 
 		pArray[i].isEmpty = 0;
 	}
 }
 
-int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
+int altaElectro(Electro *pArray, Marca *pMarca, Procedencia *pProcedencia, int limite, int *contElectro) {
 
 	int resultadoAddElectro = 0;
 	int resultadoPrintMarca = 0;
@@ -48,6 +51,10 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 	int idMarca;
 	int modelo;
 	int rescheckMarca=0;
+
+	int idPais=0;
+	int resultadoPrintProcedencia;
+	int rescheckPais=0;
 
 
 
@@ -80,15 +87,34 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 	getInt(&modelo, "\nIngrese el modelo (anio de fabricacion): ",
 			"\nERROR: Ingrese un modelo valido", 1990, 2020, 10);
 
+
+	do{
+		if(rescheckPais != 0){
+			printf("\nError, ingrese un ID valido: ");
+			system("pause");
+			rescheckPais = 0;
+		}
+		resultadoPrintProcedencia = printProcedencia(pProcedencia,4);
+		if (resultadoPrintProcedencia != 0)
+		{
+			printf("\nError mostrando los paises.\n");
+			system("pause");
+		}
+
+		rescheckPais = getInt(&idPais, "\nIngrese el ID del pais de procedencia: ",
+					"\nERROR: Seleccione un ID valido", 1, 4, 10);
+
+		}while (rescheckPais!=0);
+
 	resultadoAddElectro = addElectro(pArray, limite, auxId, serie, idMarca,
-			modelo, contElectro);
+			modelo, idPais, contElectro);
 
 	if (resultadoAddElectro != 0) {
 		printf("\nError agregando electrodomestico.\n");
 		system("pause");
 	} else {
-
 		retorno = 0;
+		printf("\nAlta realizada con exito.\n");
 		system("pause");
 	}
 }
@@ -116,7 +142,7 @@ int checkElectro(Electro *pElectro, int limite, int inputElectro)
 
 	return retorno;
 }
-int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int modelo, int *contElectro) {
+int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int modelo, int idPais, int *contElectro) {
 	int retorno = -1;
 	int i;
 	int contador = *contElectro;
@@ -130,6 +156,7 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
 			pArray[i].serie = serie;
 			pArray[i].idMarca = idMarca;
 			pArray[i].modelo = modelo;
+			pArray[i].idPais = idPais;
 			pArray[i].isEmpty = 0;
 
 			retorno = 0;
@@ -159,23 +186,30 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
 	return retorno;
 }
 
-int printElectro(Electro *pArray, Marca *pMarca, int limite) {
+int printElectro(Electro *pArray, Marca *pMarca, Procedencia *pProcedencia, int limite) {
 	int retorno = -1;
 	int i;
 	int idMarca;
 	int idMarcaPos;
+
+	int idProcedencia;
+	int idProcedenciaPos;
+
 	if (pArray != NULL && limite > 0) {
-		printf("\n_________________________________________________________");
-		printf("\n| ID:      |  Serie:       | Marca:         | Modelo:    | ");
-		printf("\n|__________|_______________|________________|____________|\n");
+		printf("\n_________________________________________________________________________________");
+		printf("\n| ID:      |  Serie:       | Marca:         | Modelo:    | Pais de Procedencia:  ");
+		printf("\n|__________|_______________|________________|____________|_______________________\n");
 		for (i = 0; i < limite; i++) {
 			if (pArray[i].isEmpty != 1) {
 
 				idMarca = pArray[i].idMarca;
 				idMarcaPos = findMarcaById(pMarca, limite, idMarca);
 
-				printf("|%d         |   %d       | %s        |  %d      |\n",
-				pArray[i].id,    pArray[i].serie,   pMarca[idMarcaPos].marcDesc,    pArray[i].modelo);
+				idProcedencia = pArray[i].idPais;
+				idProcedenciaPos = findPaisById(pProcedencia, limite, idProcedencia);
+
+				printf("|%d         |   %d       | %s        |  %d      | %s \n",
+				pArray[i].id,    pArray[i].serie,   pMarca[idMarcaPos].marcDesc,    pArray[i].modelo,  pProcedencia[idProcedenciaPos].nombrePais);
 			}
 		}
 		retorno = 0;

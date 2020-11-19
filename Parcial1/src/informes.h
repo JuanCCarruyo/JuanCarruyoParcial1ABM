@@ -17,16 +17,16 @@
 #endif /* INFORMES_H_ */
 
 //"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
-int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, int limite, int anio);
+int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, Procedencia *pProcedencia, int limite, int anio);
 
 //"2- Mostrar Electrodomesticos de una marca seleccionada\n"
-int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, int limite);
+int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, Procedencia *pProcedencia, int limite);
 
 //"3- Mostrar todos las reparaciones efectuadas al Electrodoméstico seleccionado \n"
 int repElectroSelecc(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, Cliente *pCliente, Reparacion *pRepElec, int limite);
 
 //"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
-int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, int limite);
+int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, Procedencia *pProcedencia, int limite);
 
 //"5- Informar importe total de las reparaciones realizadas a un Electrodoméstico seleccionado  \n"
 int informeTotalRep(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, Reparacion *pInformeTotalRep, int limite);

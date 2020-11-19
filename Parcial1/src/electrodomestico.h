@@ -10,6 +10,7 @@
 
 #include "marca.h"
 #include "reparacion.h"
+#include "procedencia.h"
 
 
 
@@ -29,7 +30,7 @@ void harcodeoElectro(Electro *pArray,int limite);
  * \param Contador de electrodomesticos
  * \return Retorna 0 si se realiza la carga con exito, -1 si no.
  */
-int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro);
+int altaElectro(Electro *pArray, Marca *pMarca, Procedencia *pProcedencia, int limite, int *contElectro);
 
 /*
  * \brief Revisa si existe un ID en el array de electrodomesticos.
@@ -51,7 +52,7 @@ int checkElectro(Electro *pElectro, int limite, int inputElectro);
  * \param Contador de electrodomesticos
  * \return Retorna 0 si se agrega con exito el electrodomesticos, -1 si no.
  */
-int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int modelo, int *contElectro);
+int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int modelo, int idPais, int *contElectro);
 
 /**
  * \brief Imprimo la tabla con los datos cargados al array de electrodomesticos
@@ -59,7 +60,7 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
  *  \param Tamanio maximo de la lista
  *  \return Retorna 0 si se imprime la lista con exito, -1 si no.
  */
-int printElectro(Electro *pArray, Marca *pMarca, int limite);
+int printElectro(Electro *pArray, Marca *pMarca, Procedencia *pProcedencia, int limite);
 
 /**
  * \brief Inicializa el array de electrodomesticos colocando isEmpty = 0.

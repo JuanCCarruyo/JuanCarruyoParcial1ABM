@@ -22,6 +22,7 @@
 #include "reparacion.h"
 #include "cliente.h"
 #include "informes.h"
+#include "procedencia.h"
 
 #define MAX 5
 
@@ -37,6 +38,7 @@ int main(void) {
 	eFecha arrayFecha[MAX];
 	Cliente arrayClientes[MAX];
 	Electro pElectroSinRep[MAX];
+	Procedencia arrayPaises[MAX];
 	int contElectro=1;
 	int contRep=1;
 	int contFecha=1;
@@ -68,6 +70,7 @@ int main(void) {
 	int resRecaudacionPorFecha;
 	int resprintGarantia;
 	int resrecaudacionDeMant;
+	int resultadoPrintProcedencia;
 
 	int opcion2;
 	int resultadoMenuInformes;
@@ -98,12 +101,13 @@ int main(void) {
 	resultadoInicializar = initRep(pTrabajosAElectro2018, MAX);
 
 	harcodeoClientes(arrayClientes,MAX);
+	harcodeoProcedencia(arrayPaises,MAX);
 
 	//hardcore for testing
-//	harcodeoElectro(arrayElectro,MAX);
-//	harcodeoReparacion(arrayRep,MAX);
-	int flagAltaElectro=0;
-	int flagAltaReparacion=0;
+	harcodeoElectro(arrayElectro,MAX);
+	harcodeoReparacion(arrayRep,MAX);
+	int flagAltaElectro=1;
+	int flagAltaReparacion=1;
 	//hardcode end
 
 	do {
@@ -126,8 +130,9 @@ int main(void) {
 					"7- LISTAR CLIENTES \n"
 					"8- ALTA REPARACION \n"
 					"9- LISTAR REPARACIONES \n"
-					"10- LISTAR INFORMES \n",
-							"\nError: Seleccione una opcion valida.\n", 1, 10, 3);
+					"10- LISTAR PROCEDENCIA \n"
+					"11- LISTAR INFORMES \n",
+							"\nError: Seleccione una opcion valida.\n", 1, 11, 3);
 
 			if (resultadoMenu != 0) {
 				printf("\nERROR FATAL");
@@ -139,13 +144,13 @@ int main(void) {
 			case 1: // ALTA ELECTRODOMESTICO
 				flagAltaElectro = 1;
 
-				resultadoCargaElectro = altaElectro(arrayElectro, marcas, MAX, &contElectro);
+				resultadoCargaElectro = altaElectro(arrayElectro, marcas, arrayPaises, MAX, &contElectro);
 				if (resultadoCargaElectro != 0) {
 					flagAltaElectro = 0;
 					printf("\nError en la Carga.\n");
 					system("pause");
 				}
-				printf("\nAlta realizada con exito.\n");
+
 				system("pause");
 
 				break;
@@ -153,7 +158,7 @@ int main(void) {
 			case 2: //MODIFICAR ELECTRODOMESTICO
 				if(flagAltaElectro == 1)
 				{
-					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 					if (resultadoPrintElectro != 0) {
 						printf("\nError mostrando los electrodomesticos.\n");
 						system("pause");
@@ -196,7 +201,7 @@ int main(void) {
 
 				if(flagAltaElectro == 1)
 				{
-					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 					if (resultadoPrintElectro != 0) {
 						printf("\nError mostrando los electrodomesticos.\n");
 						system("pause");
@@ -243,7 +248,7 @@ int main(void) {
 					system("pause");
 				}
 
-				resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+				resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 				if (resultadoPrintElectro != 0) {
 					printf("\nError mostrando los electrodomesticos.\n");
 					system("pause");
@@ -304,7 +309,7 @@ int main(void) {
 				{
 					flagAltaReparacion = 1;
 
-					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 					if (resultadoPrintElectro != 0) {
 						printf("\nError mostrando los electrodomesticos.\n");
 						system("pause");
@@ -343,8 +348,8 @@ int main(void) {
 
 				break;
 
-			case 10: //INFORMES
-
+			case 11: //INFORMES
+				if(flagAltaElectro == 1 || flagAltaReparacion == 1){
 				resultadoMenuInformes = getInt(&opcion2,
 						"Menu de Opciones\n"
 						"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
@@ -373,9 +378,14 @@ int main(void) {
 
 				case 1: //"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
 
-					resMostrarElectro2020 = mostrarElectroAnio(arrayElectro, pElectro2020, marcas, MAX, 2020);
+					if(flagAltaElectro == 1){
+					resMostrarElectro2020 = mostrarElectroAnio(arrayElectro, pElectro2020, marcas, arrayPaises, MAX, 2020);
 					if (resMostrarElectro2020 != 0) {
 						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					} else {
+						printf("\nDebe cargar un electrodomestico antes de mostrar el informe.\n");
 						system("pause");
 					}
 
@@ -383,17 +393,24 @@ int main(void) {
 
 				case 2: //"2- Mostrar Electrodomesticos de una marca seleccionada\n"
 
-					resMostrarElectroMarca = mostrarElectroMarca(arrayElectro, marcas, pElectroMarca, MAX);
+					if(flagAltaElectro == 1){
+					resMostrarElectroMarca = mostrarElectroMarca(arrayElectro, marcas, pElectroMarca, arrayPaises, MAX);
 					if (resMostrarElectroMarca != 0) {
 						printf("\nError mostrando el informe.\n");
 						system("pause");
 					}
+					} else {
+						printf("\nDebe cargar un electrodomestico antes de mostrar el informe.\n");
+						system("pause");
+					}
+
 
 					break;
 
 				case 3: //"3- Mostrar todos las reparaciones efectuadas al Electrodoméstico seleccionado \n"
 
-					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if(flagAltaReparacion == 1){
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 					if (resultadoPrintElectro != 0) {
 						printf("\nError mostrando los electrodomesticos.\n");
 						system("pause");
@@ -403,14 +420,23 @@ int main(void) {
 						printf("\nError mostrando el informe.\n");
 						system("pause");
 					}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
+						system("pause");
+					}
 
 					break;
 
 				case 4: //"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
 
-					resMostrarElectroSinRep = mostrarElectroSinRep(arrayElectro, arrayRep, marcas, pElectroSinRep, MAX);
+					if(flagAltaElectro == 1){
+					resMostrarElectroSinRep = mostrarElectroSinRep(arrayElectro, arrayRep, marcas, pElectroSinRep, arrayPaises, MAX);
 					if (resMostrarElectroSinRep != 0) {
 						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					} else {
+						printf("\nDebe cargar un electrodomestico antes de mostrar el informe.\n");
 						system("pause");
 					}
 
@@ -418,7 +444,8 @@ int main(void) {
 
 				case 5: //"5- Informar importe total de las reparaciones realizadas a un Electrodoméstico seleccionado  \n"
 
-					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if(flagAltaReparacion == 1){
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, arrayPaises, MAX);
 					if (resultadoPrintElectro != 0) {
 						printf("\nError mostrando los electrodomesticos.\n");
 						system("pause");
@@ -428,51 +455,80 @@ int main(void) {
 						printf("\nError mostrando el informe.\n");
 						system("pause");
 					}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
+						system("pause");
+					}
 					break;
 
 				case 6: //"6- Mostrar el servicio más pedido \n"
 
+					if(flagAltaReparacion == 1){
 					 resContadorServicio = contadorServicio(arrayRep, servicio, MAX);
 						if (resContadorServicio != 0) {
 							printf("\nError mostrando el informe.\n");
 							system("pause");
 						}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
+						system("pause");
+					}
 						break;
 
 				case 7: //"7- Mostrar la recaudación en una fecha en particular\n"
 
+					if(flagAltaReparacion == 1){
 					resRecaudacionPorFecha = recaudacionPorFecha(arrayRep, MAX, servicio, arrayFecha, &contFecha);
 					if (resRecaudacionPorFecha != 0) {
 						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
 						system("pause");
 					}
 					break;
 
 				case 8: //"8- Mostrar todos los Electrodomésticos que realizaron una garantía y la fecha\n"
 
+					if(flagAltaReparacion == 1){
 					resprintGarantia = printGarantia(arrayRep, arrayElectro, arrayClientes, marcas, servicio, MAX);
 					if (resprintGarantia != 0) {
 						printf("\nError mostrando el informe.\n");
 						system("pause");
 					}
 					system("pause");
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
+						system("pause");
+					}
 
 					break;
 
 				case 9: //"9- Trabajos realizados a Electrodomésticos del año(modelo) 2018\n"
 
+					if(flagAltaReparacion == 1){
 					resMostrarTrabajosAElectro2018 = mostrarTrabajosAElectro2018(arrayRep, arrayElectro, servicio, pTrabajosAElectro2018, MAX);
 					if (resMostrarTrabajosAElectro2018 != 0) {
 						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
 						system("pause");
 					}
 					break;
 
 				case 10: //"10- Facturación total por los mantenimientos\n"
 
+					if(flagAltaReparacion == 1){
 					resrecaudacionDeMant = recaudacionDeMant(arrayRep, MAX, servicio);
 					if (resrecaudacionDeMant != 0) {
 						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
 						system("pause");
 					}
 					break;
@@ -480,6 +536,7 @@ int main(void) {
 
 				case 11: //"11- Informar la marca con mas Electrodomésticos \n"
 
+					if(flagAltaElectro == 1){
 					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX, contadorElectro);
 					if (resContadoresMarcas != 0) {
 						printf("\nERROR FATAL");
@@ -487,11 +544,16 @@ int main(void) {
 						break;
 					}
 					system("pause");
+					} else {
+						printf("\nDebe cargar un electrodomestico antes de mostrar el informe.\n");
+						system("pause");
+					}
 
 					break;
 
 				case 12: //"12- Informar el cliente con mas reparaciones \n"
 
+					if(flagAltaReparacion == 1){
 					resContadoresClientes = contadoresClientes(arrayRep, arrayClientes, MAX, contadorCliente);
 					if (resContadoresClientes != 0) {
 						printf("\nERROR FATAL");
@@ -499,6 +561,10 @@ int main(void) {
 						break;
 					}
 					system("pause");
+					} else {
+						printf("\nDebe cargar una reparacion antes de mostrar el informe.\n");
+						system("pause");
+					}
 
 
 					break;
@@ -512,15 +578,28 @@ int main(void) {
 
 
 				}
-
-
+				}else{
+					printf("\nDebe cargar algun electrodomestico o reparacion antes de mostrar los informes. \n");
+					system("pause");
+				}
 
 				break;
 
+			case 10:
+
+				resultadoPrintProcedencia = printProcedencia(arrayPaises,4);
+				if (resultadoPrintProcedencia != 0)
+				{
+					printf("\nError mostrando los paises.\n");
+					system("pause");
+				}
+				system("pause");
+
+				break;
 
 			}
 
-		} while (opcion == 1 || opcion == 2 || opcion == 3 || opcion == 4 || opcion == 5 || opcion == 6 || opcion == 7 || opcion == 8|| opcion == 9 || opcion == 10);
+		} while (opcion == 1 || opcion == 2 || opcion == 3 || opcion == 4 || opcion == 5 || opcion == 6 || opcion == 7 || opcion == 8|| opcion == 9 || opcion == 10 || opcion == 11);
 
 
 	return EXIT_SUCCESS;

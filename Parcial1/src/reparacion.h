@@ -30,6 +30,7 @@ typedef struct
     int serie;
     int idMarca;
     int modelo;
+    int idPais;
     int isEmpty;
 }Electro;
 
