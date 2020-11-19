@@ -37,14 +37,12 @@ int main(void) {
 	eFecha arrayFecha[MAX];
 	Cliente arrayClientes[MAX];
 	Electro pElectroSinRep[MAX];
-	int contElectro=0;
-	int contRep=0;
-	int contFecha=0;
+	int contElectro=1;
+	int contRep=1;
+	int contFecha=1;
 
 	int opcion;
 	int resultadoInicializar;
-	int resultadoInicializar2;
-	int resultadoInicializar3;
 	int resultadoMenu;
 	int resultadoCargaElectro;
 	int resultadoBajaElectro;
@@ -61,9 +59,7 @@ int main(void) {
 	int resultadoAltaReparacion;
 	int resContadoresClientes;
 	int resMostrarElectro2020;
-	int resultadoInicializar4;
 	int resMostrarElectroMarca;
-	int resultadoInicializar5;
 	int resrepElectroSelecc;
 	int resMostrarElectroSinRep;
 	int resInformeTotalRep;
@@ -92,29 +88,26 @@ int main(void) {
 	Reparacion pTrabajosAElectro2018[MAX];
 
 	resultadoInicializar = initElectro(arrayElectro, MAX);
-
-	resultadoInicializar2 = initRep(arrayRep, MAX);
-	resultadoInicializar3 = initFecha(arrayFecha, MAX);
-
-	resultadoInicializar4 = initElectro(pElectro2020, MAX);
-	resultadoInicializar5 = initElectro(pElectroMarca, MAX);
-
-	resultadoInicializar5 = initRep(pRepElec, MAX);
-	resultadoInicializar5 = initElectro(pElectroSinRep, MAX);
-	resultadoInicializar5 = initRep(pInformeTotalRep, MAX);
-	resultadoInicializar5 = initRep(pTrabajosAElectro2018, MAX);
+	resultadoInicializar = initRep(arrayRep, MAX);
+	resultadoInicializar = initFecha(arrayFecha, MAX);
+	resultadoInicializar = initElectro(pElectro2020, MAX);
+	resultadoInicializar = initElectro(pElectroMarca, MAX);
+	resultadoInicializar = initRep(pRepElec, MAX);
+	resultadoInicializar = initElectro(pElectroSinRep, MAX);
+	resultadoInicializar = initRep(pInformeTotalRep, MAX);
+	resultadoInicializar = initRep(pTrabajosAElectro2018, MAX);
 
 	harcodeoClientes(arrayClientes,MAX);
 
 	//hardcore for testing
-	harcodeoElectro(arrayElectro,MAX);
-	harcodeoReparacion(arrayRep,MAX);
-	int flagAltaElectro=1;
-	int flagAltaReparacion=1;
+//	harcodeoElectro(arrayElectro,MAX);
+//	harcodeoReparacion(arrayRep,MAX);
+	int flagAltaElectro=0;
+	int flagAltaReparacion=0;
 	//hardcode end
 
 	do {
-			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1 || resultadoInicializar4 == -1 || resultadoInicializar5 == -1) {
+			if (resultadoInicializar == -1) {
 				printf("\nERROR AL INICIALIZAR");
 				system("pause");
 				break;
@@ -152,7 +145,8 @@ int main(void) {
 					printf("\nError en la Carga.\n");
 					system("pause");
 				}
-
+				printf("\nAlta realizada con exito.\n");
+				system("pause");
 
 				break;
 
@@ -202,7 +196,11 @@ int main(void) {
 
 				if(flagAltaElectro == 1)
 				{
-
+					resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
+					if (resultadoPrintElectro != 0) {
+						printf("\nError mostrando los electrodomesticos.\n");
+						system("pause");
+					}
 					resultadoBajaElectro = getInt(&inputID, "\nIngrese el ID del electrodomestico: ",
 							"\nERROR: Ingrese un ID valido", 1, MAX, 10);
 
@@ -218,7 +216,7 @@ int main(void) {
 							system("pause");
 						} else {
 							resultadoRemoveElectro = removeElectro(arrayElectro,
-							MAX, resultadoFindElectroById, &contElectro);
+							MAX, resultadoFindElectroById);
 							if (resultadoRemoveElectro != 0) {
 								printf("\nError removiendo electrodomestico.\n");
 								system("pause");
@@ -360,8 +358,9 @@ int main(void) {
 						"9- Trabajos realizados a Electrodomésticos del año(modelo) 2018\n"
 						"10- Facturación total por los mantenimientos\n"
 						"11- Informar la marca con mas Electrodomésticos \n"
-						"12- Informar el cliente con mas reparaciones \n",
-								"\nError: Seleccione una opcion valida.\n", 1, 12, 3);
+						"12- Informar el cliente con mas reparaciones \n"
+						"13- Volver \n",
+								"\nError: Seleccione una opcion valida.\n", 1, 13, 3);
 
 				if (resultadoMenuInformes != 0) {
 					printf("\nERROR FATAL");
@@ -501,6 +500,10 @@ int main(void) {
 					}
 					system("pause");
 
+
+					break;
+
+				case 13: //"13- Volver \n"
 
 					break;
 

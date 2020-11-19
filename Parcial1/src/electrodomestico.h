@@ -77,7 +77,7 @@ int initElectro(Electro *pArray, int limite);
  *  \param Contador de electrodomesticos
  *  \return Retorna 0 si se da de baja el elemento con exito, -1 si no.
  */
-int removeElectro(Electro *pArray, int limite, int id, int *contElectro);
+int removeElectro(Electro *pArray, int limite, int id);
 
 /**
  * \brief Realiza la busqueda de un electrodomestico por ID

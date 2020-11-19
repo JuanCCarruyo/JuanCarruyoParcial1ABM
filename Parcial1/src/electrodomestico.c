@@ -61,6 +61,8 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 	do{
 		if(rescheckMarca != 0){
 			printf("\nError, ingrese un ID valido: ");
+			system("pause");
+			rescheckMarca = 0;
 		}
 	resultadoPrintMarca = printMarca(pMarca,limite);
 	if (resultadoPrintMarca != 0)
@@ -68,9 +70,10 @@ int altaElectro(Electro *pArray, Marca *pMarca, int limite, int *contElectro) {
 		printf("\nError mostrando las marcas.\n");
 		system("pause");
 	}
-	printf("\nIngrese el ID de la marca: ");
-	scanf("%d", &idMarca);
-	rescheckMarca = checkMarca(pMarca, limite, idMarca);
+
+	rescheckMarca = getInt(&idMarca, "\nIngrese el ID de la marca: ",
+				"\nERROR: Seleccione una marca valida", 1000, 1004, 10);
+
 	}while (rescheckMarca!=0);
 
 
@@ -118,11 +121,29 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
 	int i;
 	int contador = *contElectro;
 
-	if (findEmptyE(pArray, limite, &i) == 0) {
-		contador++;
-		*contElectro = contador;
 
-		pArray[i].id = *contElectro;
+	for (i = 0;i<limite;i++)
+	{
+		if (pArray[i].isEmpty == 1)
+		{
+			pArray[i].id = contador;
+			pArray[i].serie = serie;
+			pArray[i].idMarca = idMarca;
+			pArray[i].modelo = modelo;
+			pArray[i].isEmpty = 0;
+
+			retorno = 0;
+			contador++;
+			*contElectro = contador;
+			break;
+		}
+
+	}
+/*
+	if (findEmptyE(pArray, limite, &i) == 0) {
+
+
+		pArray[i].id = i;
 		pArray[i].serie = serie;
 		pArray[i].idMarca = idMarca;
 		pArray[i].modelo = modelo;
@@ -134,7 +155,7 @@ int addElectro(Electro *pArray, int limite, int id, int serie, int idMarca, int 
 		retorno = -1;
 		printf("\nNo hay espacio para mas empleados.");
 	}
-
+*/
 	return retorno;
 }
 
@@ -175,14 +196,12 @@ int initElectro(Electro *pArray, int limite) {
 	return retorno;
 }
 
-int removeElectro(Electro *pArray, int limite, int id, int *contElectro) {
+int removeElectro(Electro *pArray, int limite, int id) {
 	int retorno = -1;
-	int contador = *contElectro;
 
-	if (pArray != NULL && limite > 0) {
+
+	if (pArray != NULL && limite > 0 && id != -1) {
 		pArray[id].isEmpty = 1;
-		contador--;
-		*contElectro = contador;
 		retorno = 0;
 	}
 	return retorno;

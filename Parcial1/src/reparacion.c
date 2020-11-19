@@ -63,10 +63,12 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, e
 	do{
 		if(residElectro!=0){
 			printf("\nError, ID invalido: ");
+			residElectro = 0;
 		}
 
-	printf("\nIngrese el ID del Electrodomestico: ");
-	scanf("%d", &idElectro);
+		residElectro = getInt(&idElectro, "\nIngrese el ID del Electrodomestico: ",
+					"\nERROR: Seleccione una Electrodomestico valido", 1, limite, 10);
+
 	residElectro = checkElectro(pElectro, limite, idElectro);
 	}while (residElectro!=0);
 
@@ -77,11 +79,14 @@ int altaReparacion(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, e
 		printf("\nError mostrando los servicios.\n");
 		system("pause");
 	}
-		if(residServicio!=0){
-			printf("\nError, ID invalido: ");
-		}
-	printf("\nIngrese el ID del Servicio: ");
-	scanf("%d", &idServicio);
+	if(residServicio!=0)
+	{
+		printf("\nError, ID invalido: ");
+		residServicio = 0;
+	}
+	residServicio = getInt(&idServicio, "\nIngrese el ID del Servicio: ",
+							"\nERROR: Seleccione una servicio valido", 20000, 20003, 10);
+
 	residServicio = checkServicio(pServicio, limite, idServicio);
 	}while (residServicio!=0);
 
@@ -140,7 +145,7 @@ int addRep(Reparacion *pArray, int limite, int id, int serie, int idCliente, int
 		contador++;
 		*contReparacion = contador;
 
-		pArray[i].id = *contReparacion;
+		pArray[i].id = i;
 		pArray[i].serie = serie;
 		pArray[i].idCliente = idCliente;
 		pArray[i].idServicio = idServicio;
